@@ -1,4 +1,4 @@
-# Totem Keyboard - ZMK Firmware Configuration
+# Totem Keyboard - ZMK Firmware Configuration with studio enabled
 
 ![Icon](icon-256.png)
 
