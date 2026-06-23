@@ -11,10 +11,9 @@
 // ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
 
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
-#include <dt-bindings/zmk/outputs.h>
-#include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/pointing.h>
 
 #define Base            0
 #define Sym             1
@@ -26,13 +25,12 @@
     quick-release;
 };
 
-&caps_word {
-    continue-list = <UNDERSCORE MINUS BSPC>;
-};
+&caps_word { continue-list = <UNDERSCORE MINUS BSPC>; };
 
 / {
     conditional_layers {
         compatible = "zmk,conditional-layers";
+
         tri_layer {
             if-layers = <1 2>;
             then-layer = <3>;
@@ -44,6 +42,64 @@
     //           20  21  22  23  24  25                  26  27  28  29  30  31
     //                       32  33  34                  35  36  37
 
+    behaviors {
+        f_layer_one: f_layer_one {
+            compatible = "zmk,behavior-tap-dance";
+            label = "F_LAYER_ONE";
+            #binding-cells = <0>;
+            bindings = <&lt 1 F>;
+        };
+
+        h_layer_one: h_layer_one {
+            compatible = "zmk,behavior-tap-dance";
+            label = "H_LAYER_ONE";
+            #binding-cells = <0>;
+            bindings = <&lt 1 H>;
+        };
+
+        ctrl_zero: ctrl_zero {
+            compatible = "zmk,behavior-tap-dance";
+            label = "CTRL_ZERO";
+            #binding-cells = <0>;
+            bindings = <&mt LCTRL N0>;
+        };
+
+        dollar_sign_layer_two: dollar_sign_layer_two {
+            compatible = "zmk,behavior-tap-dance";
+            label = "DOLLAR_SIGN_LAYER_TWO";
+            #binding-cells = <0>;
+            bindings = <&lt 2 LS(NUMBER_4)>;
+        };
+
+        q_layer_num: q_layer_num {
+            compatible = "zmk,behavior-tap-dance";
+            label = "Q_LAYER_NUM";
+            #binding-cells = <0>;
+            bindings = <&lt 2 Q>;
+        };
+
+        tab_layer_3: tab_layer_3 {
+            compatible = "zmk,behavior-tap-dance";
+            label = "TAB_LAYER_3";
+            #binding-cells = <0>;
+            bindings = <&lt 3 TAB>;
+        };
+
+        q_layer_two: q_layer_two {
+            compatible = "zmk,behavior-tap-dance";
+            label = "Q_LAYER_TWO";
+            #binding-cells = <0>;
+            bindings = <&lt 2 Q>;
+        };
+
+        super_esc: super_esc {
+            compatible = "zmk,behavior-tap-dance";
+            label = "SUPER_ESC";
+            #binding-cells = <0>;
+            bindings = <&mt LGUI ESC>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -54,10 +110,10 @@
         Base {
             label = "Base";
             bindings = <
-                     &kp Q  &kp W  &kp E     &kp R    &kp T                      &kp Y      &kp U    &kp I      &kp O    &kp P
-                     &kp A  &kp S  &kp D     &kp F    &kp G                      &kp H      &kp J    &kp K      &kp L    &kp SEMI
-            &kp ESC  &kp Z  &kp X  &kp C     &kp V    &kp B                      &kp N      &kp M    &kp COMMA  &kp DOT  &kp SLASH  &kp SQT 
-                                   &kp BSPC  &mo Sym  &kp LSHFT                  &kp SPACE  &mo Nav  &kp RET
+         &kp Q  &kp W  &kp E     &kp R    &kp T        &kp Y      &kp U    &kp I      &kp O    &kp P
+         &kp A  &kp S  &kp D     &kp F    &kp G        &kp H      &kp J    &kp K      &kp L    &kp SEMI
+&kp ESC  &kp Z  &kp X  &kp C     &kp V    &kp B        &kp N      &kp M    &kp COMMA  &kp DOT  &kp SLASH  &kp SQT
+                       &kp BSPC  &mo Sym  &kp LSHFT    &kp SPACE  &mo Nav  &kp RET
             >;
         };
 
@@ -65,13 +121,14 @@
         // Home row has shift, alt, gui, ctrl, equal, tilde, and scroll up/down (a little nav spillover)
         // Central columns have &, @, =, ~, = and ^
         // Bottom row has tab, hash, pipe, star, minus, plus, caret, backslash, dollar, exclamaion, percent, grave
+
         Sym {
             label = "Sym";
             bindings = <
-                          &kp LT     &kp LBKT  &kp LBRC  &kp LPAR   &kp AMPS         &kp AT     &kp  RPAR      &kp  RBRC    &kp RBKT  &kp GT
-                          &sk LSHFT  &sk LALT  &sk LGUI  &sk LCTRL  &kp EQUAL        &kp TILDE  &msc SCRL_DOWN &msc SCRL_UP &none     &none
-            &kp LG(Z)     &kp HASH   &kp PIPE  &kp STAR  &kp MINUS  &kp PLUS         &kp CARET  &kp  BSLH      &kp  DLLR    &kp EXCL  &kp PRCNT  &kp GRAVE
-                                               &kp DEL   &none      &none            &kp SPACE  &mo  Nav       &kp  LG(RET)
+          &kp DOUBLE_QUOTES  &kp SINGLE_QUOTE  &kp LT     &kp MINUS     &kp GREATER_THAN    &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp RBRC      &kp RBKT  &kp GT
+          &kp DOLLAR         &kp HASH          &kp ASTRK  &kp QUESTION  &kp COLON           &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &msc SCRL_UP  &none     &none
+&kp PIPE  &kp PERCENT        &kp EQUAL         &kp STAR   &kp MINUS     &kp PLUS            &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp DLLR      &kp EXCL  &kp PRCNT  &kp GRAVE
+                                               &kp DEL    &none         &none               &kp SPACE             &mo Nav                &kp LG(RET)
             >;
         };
 
@@ -82,10 +139,10 @@
         Nav {
             label = "Nav";
             bindings = <
-                    &kp LSHFT      &mkp RCLK      &mmv MOVE_UP   &mkp LCLK       &none                &kp DEL  &sk RCTRL  &sk RGUI  &sk RALT   &sk RSHFT
-                    &msc SCRL_LEFT &mmv MOVE_LEFT &mmv MOVE_DOWN &mmv MOVE_RIGHT &msc SCRL_RIGHT      &kp LEFT &kp DOWN   &kp UP    &kp RIGHT  &kp UNDER
-            &kp TAB &kp N1         &kp N2         &kp N3         &kp N4          &kp N5               &kp N6   &kp N7     &kp N8    &kp N9     &kp N0     &kp MINUS
-                                                  &kp RGUI       &mo Sym         &kp RALT             &none    &none      &none
+         &kp LSHFT       &mkp RCLK       &mmv MOVE_UP    &mkp LCLK        &none              &kp NUMBER_7  &kp NUMBER_8  &kp NUMBER_9  &sk RALT   &sk RSHFT
+         &msc SCRL_LEFT  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &msc SCRL_RIGHT    &kp NUMBER_4  &kp NUMBER_5  &kp NUMBER_6  &kp RIGHT  &kp UNDER
+&kp TAB  &kp N1          &kp N2          &kp N3          &kp N4           &kp N5             &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp N9     &kp N0     &kp MINUS
+                                         &kp RGUI        &mo Sym          &kp RALT           &kp NUMBER_0  &none         &none
             >;
         };
 
@@ -95,10 +152,10 @@
         Adjust {
             label = "Adjust";
             bindings = <
-                      &bt BT_SEL 0  &bt BT_SEL 1   &bt BT_SEL 2  &kp C_AC_DESKTOP_SHOW_ALL_WINDOWS &kp C_AC_DESKTOP_SHOW_ALL_APPLICATIONS        &kp C_PP  &kp C_VOL_DN    &kp C_VOL_UP  &kp C_MUTE      &kp C_NEXT
-                      &bt BT_CLR    &studio_unlock &none         &none                             &caps_word                                    &kp HOME  &kp PG_DN       &kp PG_UP     &kp END         &kp INS
-            &kp F12   &kp F1        &kp F2         &kp F3        &kp F4                            &kp F5                                        &kp F6    &kp F7          &kp F8        &kp F9          &kp F10     &kp F11
-                                                   &none         &none                             &none                                         &none     &none           &none
+         &bt BT_SEL 0  &bt BT_SEL 1    &bt BT_SEL 2  &kp C_AC_DESKTOP_SHOW_ALL_WINDOWS  &kp C_AC_DESKTOP_SHOW_ALL_APPLICATIONS    &kp C_PP  &kp C_VOL_DN  &kp C_VOL_UP  &kp C_MUTE  &kp C_NEXT
+         &bt BT_CLR    &studio_unlock  &none         &none                              &caps_word                                &kp HOME  &kp PG_DN     &kp PG_UP     &kp END     &kp INS
+&kp F12  &kp F1        &kp F2          &kp F3        &kp F4                             &kp F5                                    &kp F6    &kp F7        &kp F8        &kp F9      &kp F10     &kp F11
+                                       &none         &none                              &none                                     &none     &none         &none
             >;
         };
     };
